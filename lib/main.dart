@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:uav_mobile_controller/widgets/flightInstruments.dart';
+import 'package:uav_mobile_controller/widgets/fligh_iInstruments.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
