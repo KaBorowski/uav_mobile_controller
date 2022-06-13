@@ -40,7 +40,7 @@ class _FlightInstrumentsState extends State<FlightInstrumentsPage> {
     _positionFactor = 0.025;
     _markerHeight = 10;
     _markerWidth = 15;
-    _labelFontSize = 11;
+    _labelFontSize = 7;
     _containerPadding = 1;
     _pitchValue = 0.0;
     _rollValue = 0.0;
@@ -52,8 +52,9 @@ class _FlightInstrumentsState extends State<FlightInstrumentsPage> {
         padding: const EdgeInsets.all(50),
         crossAxisSpacing: 00,
         mainAxisSpacing: 0,
-        crossAxisCount: 3,
+        crossAxisCount: 4,
         children: <Widget>[
+          // Compass
           Container(
             padding: EdgeInsets.all(_containerPadding),
             child: SfRadialGauge(
@@ -73,8 +74,7 @@ class _FlightInstrumentsState extends State<FlightInstrumentsPage> {
                   interval: 30,
                   minorTicksPerInterval: 4,
                   axisLabelStyle: GaugeTextStyle(
-                      color: const Color(0xFF949494),
-                      fontSize: isCardView ? 10 : _labelFontSize),
+                      color: const Color(0xFF949494), fontSize: _labelFontSize),
                   minorTickStyle: const MinorTickStyle(
                       color: Color(0xFF616161),
                       thickness: 1.6,
@@ -93,11 +93,11 @@ class _FlightInstrumentsState extends State<FlightInstrumentsPage> {
                   //       color: const Color(0xFFDF5F2D),
                   //       enableAnimation: true,
                   //       animationDuration: 1200,
-                  //       markerOffset: isCardView ? 0.69 : _markerOffset,
+                  //       markerOffset:  : _markerOffset,
                   //       offsetUnit: GaugeSizeUnit.factor,
                   //       markerType: MarkerType.triangle,
-                  //       markerHeight: isCardView ? 8 : _markerHeight,
-                  //       markerWidth: isCardView ? 8 : _markerWidth)
+                  //       markerHeight: _markerHeight,
+                  //       markerWidth: _markerWidth)
                   // ],
                   // annotations: <GaugeAnnotation>[
                   //   GaugeAnnotation(
@@ -109,259 +109,14 @@ class _FlightInstrumentsState extends State<FlightInstrumentsPage> {
                   //             color: const Color(0xFFDF5F2D),
                   //             fontWeight: FontWeight.bold,
                   //             fontSize:
-                  //                 isCardView ? 16 : _annotationTextSize),
+                  //                  _annotationTextSize),
                   //       ))
                   // ]
                 )
               ],
             ),
           ),
-          Container(
-            padding: EdgeInsets.all(_containerPadding),
-            child: SfRadialGauge(
-              // title: GaugeTitle(text: "Throtle"),
-              axes: <RadialAxis>[
-                RadialAxis(
-                  showAxisLine: false,
-                  showLastLabel: true,
-                  radiusFactor: 1,
-                  canRotateLabels: true,
-                  tickOffset: 0.32,
-                  offsetUnit: GaugeSizeUnit.factor,
-                  // onLabelCreated: _handleAxisLabelCreated,
-                  startAngle: 270,
-                  endAngle: 230,
-                  labelOffset: 0.05,
-                  maximum: 100,
-                  minimum: 0,
-                  interval: 10,
-                  minorTicksPerInterval: 4,
-                  axisLabelStyle: GaugeTextStyle(
-                      color: const Color(0xFF949494),
-                      fontSize: isCardView ? 10 : _labelFontSize),
-                  minorTickStyle: const MinorTickStyle(
-                      color: Color(0xFF616161),
-                      thickness: 1.6,
-                      length: 0.058,
-                      lengthUnit: GaugeSizeUnit.factor),
-                  majorTickStyle: const MajorTickStyle(
-                      color: Color(0xFF949494),
-                      thickness: 2.3,
-                      length: 0.087,
-                      lengthUnit: GaugeSizeUnit.factor),
-                  backgroundImage:
-                      const AssetImage('images/dark_theme_gauge.png'),
-                  pointers: const <GaugePointer>[
-                    NeedlePointer(
-                        value: 20,
-                        needleEndWidth: 3,
-                        needleLength: 0.6,
-                        needleColor: Color(0xFFFFFF00),
-                        knobStyle: KnobStyle(
-                          knobRadius: 8,
-                          color: Color(0xFFFFFF00),
-                          sizeUnit: GaugeSizeUnit.logicalPixel,
-                        ),
-                        tailStyle: TailStyle(
-                            width: 3,
-                            color: Color(0xFFFFFF00),
-                            lengthUnit: GaugeSizeUnit.logicalPixel,
-                            length: 20))
-                  ],
-                ),
-              ],
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.all(_containerPadding),
-            child: SfRadialGauge(
-              axes: <RadialAxis>[
-                RadialAxis(
-                  showAxisLine: false,
-                  radiusFactor: 1,
-                  canRotateLabels: true,
-                  tickOffset: 0.32,
-                  offsetUnit: GaugeSizeUnit.factor,
-                  onLabelCreated: _handleAxisLabelCreated,
-                  startAngle: 270,
-                  endAngle: 270,
-                  labelOffset: 0.05,
-                  maximum: 360,
-                  minimum: 0,
-                  interval: 30,
-                  minorTicksPerInterval: 4,
-                  axisLabelStyle: GaugeTextStyle(
-                      color: const Color(0xFF949494),
-                      fontSize: isCardView ? 10 : _labelFontSize),
-                  minorTickStyle: const MinorTickStyle(
-                      color: Color(0xFF616161),
-                      thickness: 1.6,
-                      length: 0.058,
-                      lengthUnit: GaugeSizeUnit.factor),
-                  majorTickStyle: const MajorTickStyle(
-                      color: Color(0xFF949494),
-                      thickness: 2.3,
-                      length: 0.087,
-                      lengthUnit: GaugeSizeUnit.factor),
-                  backgroundImage:
-                      const AssetImage('images/dark_theme_gauge.png'),
-                  pointers: <GaugePointer>[
-                    MarkerPointer(
-                        value: _compassValue,
-                        color: const Color(0xFFDF5F2D),
-                        enableAnimation: true,
-                        animationDuration: 1200,
-                        markerOffset: 0.9,
-                        offsetUnit: GaugeSizeUnit.factor,
-                        // markerType: MarkerType.triangle,
-                        markerType: MarkerType.image,
-                        imageUrl: 'images/test_compass.png',
-                        markerHeight: 100,
-                        markerWidth: 100)
-                  ],
-                  // annotations: <GaugeAnnotation>[
-                  //   GaugeAnnotation(
-                  //       angle: 270,
-                  //       positionFactor: _positionFactor,
-                  //       widget: Text(
-                  //         _compassValue.toInt().toString(),
-                  //         style: TextStyle(
-                  //             color: const Color(0xFFDF5F2D),
-                  //             fontWeight: FontWeight.bold,
-                  //             fontSize:
-                  //                 isCardView ? 16 : _annotationTextSize),
-                  //       ))
-                  // ]
-                )
-              ],
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.all(_containerPadding),
-            child: SfRadialGauge(
-              axes: <RadialAxis>[
-                RadialAxis(
-                  showAxisLine: false,
-                  radiusFactor: 1,
-                  canRotateLabels: true,
-                  tickOffset: 0.32,
-                  offsetUnit: GaugeSizeUnit.factor,
-                  // onLabelCreated: _handleAxisLabelCreated,
-                  startAngle: 180 - _rollValue,
-                  endAngle: 180 - _rollValue,
-                  labelOffset: 0.05,
-                  maximum: 270,
-                  minimum: -90,
-                  showLastLabel: true,
-                  interval: 90,
-                  minorTicksPerInterval: 0,
-                  // ranges: <GaugeRange>[
-                  //   GaugeRange(
-                  //       startValue: -90,
-                  //       endValue: 90,
-                  //       color: Color.fromARGB(255, 0x00, 0xbf, 0xff),
-                  //       sizeUnit: GaugeSizeUnit.factor,
-                  //       rangeOffset: 0.06,
-                  //       startWidth: 0.2,
-                  //       endWidth: 0.2),
-                  //   GaugeRange(
-                  //     startValue: 90,
-                  //     endValue: 270,
-                  //     rangeOffset: 0.28,
-                  //     sizeUnit: GaugeSizeUnit.factor,
-                  //     color: const Color(0xFF355C7D),
-                  //     startWidth: 0.2,
-                  //     endWidth: 0.2,
-                  //   )
-                  // ],
-                  axisLabelStyle: GaugeTextStyle(
-                      color: const Color(0xFF949494),
-                      fontSize: isCardView ? 10 : _labelFontSize),
-                  minorTickStyle: const MinorTickStyle(
-                      color: Color(0xFF616161),
-                      thickness: 1.6,
-                      length: 0.058,
-                      lengthUnit: GaugeSizeUnit.factor),
-                  majorTickStyle: const MajorTickStyle(
-                      color: Color(0xFF949494),
-                      thickness: 2.3,
-                      length: 0.087,
-                      lengthUnit: GaugeSizeUnit.factor),
-                  backgroundImage:
-                      const AssetImage('images/attitude_indicator_back.png'),
-                  pointers: <GaugePointer>[
-                    MarkerPointer(
-                        value: 0,
-                        color: const Color(0xFFDF5F2D),
-                        enableAnimation: false,
-                        // animationDuration: 1200,
-                        markerOffset: 91 + _pitchValue / 2,
-                        offsetUnit: GaugeSizeUnit.logicalPixel,
-                        // markerType: MarkerType.triangle,
-                        markerType: MarkerType.image,
-                        imageUrl: 'images/attitude_indicator_pointer.png',
-                        markerHeight: 100,
-                        markerWidth: 100)
-                  ],
-                )
-              ],
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.all(_containerPadding),
-            child: SfRadialGauge(
-              axes: <RadialAxis>[
-                RadialAxis(
-                  showAxisLine: false,
-                  showLastLabel: true,
-                  radiusFactor: 1,
-                  canRotateLabels: false,
-                  tickOffset: 0.32,
-                  offsetUnit: GaugeSizeUnit.factor,
-                  // onLabelCreated: _handleAxisLabelCreated,
-                  startAngle: 90,
-                  endAngle: 270,
-                  labelOffset: 0.05,
-                  maximum: 0.5,
-                  minimum: -0.5,
-                  interval: 0.5,
-                  minorTicksPerInterval: 15,
-                  axisLabelStyle: GaugeTextStyle(
-                      color: const Color(0xFF949494),
-                      fontSize: isCardView ? 10 : _labelFontSize),
-                  minorTickStyle: const MinorTickStyle(
-                      color: Color(0xFF616161),
-                      thickness: 1.6,
-                      length: 0.058,
-                      lengthUnit: GaugeSizeUnit.factor),
-                  majorTickStyle: const MajorTickStyle(
-                      color: Color(0xFF949494),
-                      thickness: 2.3,
-                      length: 0.087,
-                      lengthUnit: GaugeSizeUnit.factor),
-                  backgroundImage:
-                      const AssetImage('images/dark_theme_gauge.png'),
-                  pointers: const <GaugePointer>[
-                    NeedlePointer(
-                        value: 20,
-                        needleEndWidth: 3,
-                        needleLength: 0.6,
-                        needleColor: Color(0xFFFFFF00),
-                        knobStyle: KnobStyle(
-                          knobRadius: 8,
-                          color: Color(0xFFFFFF00),
-                          sizeUnit: GaugeSizeUnit.logicalPixel,
-                        ),
-                        tailStyle: TailStyle(
-                            width: 3,
-                            color: Color(0xFFFFFF00),
-                            lengthUnit: GaugeSizeUnit.logicalPixel,
-                            length: 20))
-                  ],
-                ),
-              ],
-            ),
-          ),
+          // Altimeter indicator
           Container(
             padding: EdgeInsets.all(_containerPadding),
             child: SfRadialGauge(
@@ -382,8 +137,7 @@ class _FlightInstrumentsState extends State<FlightInstrumentsPage> {
                   interval: 1,
                   minorTicksPerInterval: 4,
                   axisLabelStyle: GaugeTextStyle(
-                      color: const Color(0xFF949494),
-                      fontSize: isCardView ? 10 : _labelFontSize),
+                      color: const Color(0xFF949494), fontSize: _labelFontSize),
                   minorTickStyle: const MinorTickStyle(
                       color: Color(0xFF616161),
                       thickness: 1.6,
@@ -470,6 +224,356 @@ class _FlightInstrumentsState extends State<FlightInstrumentsPage> {
               ],
             ),
           ),
+          // Throttle
+          Container(
+            padding: EdgeInsets.all(_containerPadding),
+            child: SfRadialGauge(
+              // title: GaugeTitle(text: "Throtle"),
+              axes: <RadialAxis>[
+                RadialAxis(
+                  showAxisLine: false,
+                  showLastLabel: true,
+                  radiusFactor: 1,
+                  canRotateLabels: true,
+                  tickOffset: 0.32,
+                  offsetUnit: GaugeSizeUnit.factor,
+                  // onLabelCreated: _handleAxisLabelCreated,
+                  startAngle: 270,
+                  endAngle: 230,
+                  labelOffset: 0.05,
+                  maximum: 100,
+                  minimum: 0,
+                  interval: 10,
+                  minorTicksPerInterval: 4,
+                  axisLabelStyle: GaugeTextStyle(
+                      color: const Color(0xFF949494), fontSize: _labelFontSize),
+                  minorTickStyle: const MinorTickStyle(
+                      color: Color(0xFF616161),
+                      thickness: 1.6,
+                      length: 0.058,
+                      lengthUnit: GaugeSizeUnit.factor),
+                  majorTickStyle: const MajorTickStyle(
+                      color: Color(0xFF949494),
+                      thickness: 2.3,
+                      length: 0.087,
+                      lengthUnit: GaugeSizeUnit.factor),
+                  backgroundImage:
+                      const AssetImage('images/dark_theme_gauge.png'),
+                  pointers: const <GaugePointer>[
+                    NeedlePointer(
+                        value: 20,
+                        needleEndWidth: 3,
+                        needleLength: 0.6,
+                        needleColor: Color(0xFFFFFF00),
+                        knobStyle: KnobStyle(
+                          knobRadius: 8,
+                          color: Color(0xFFFFFF00),
+                          sizeUnit: GaugeSizeUnit.logicalPixel,
+                        ),
+                        tailStyle: TailStyle(
+                            width: 3,
+                            color: Color(0xFFFFFF00),
+                            lengthUnit: GaugeSizeUnit.logicalPixel,
+                            length: 20))
+                  ],
+                ),
+              ],
+            ),
+          ),
+          // Throttle
+          Container(
+            padding: EdgeInsets.all(_containerPadding),
+            child: SfRadialGauge(
+              // title: GaugeTitle(text: "Throtle"),
+              axes: <RadialAxis>[
+                RadialAxis(
+                  showAxisLine: false,
+                  showLastLabel: true,
+                  radiusFactor: 1,
+                  canRotateLabels: true,
+                  tickOffset: 0.32,
+                  offsetUnit: GaugeSizeUnit.factor,
+                  // onLabelCreated: _handleAxisLabelCreated,
+                  startAngle: 270,
+                  endAngle: 230,
+                  labelOffset: 0.05,
+                  maximum: 100,
+                  minimum: 0,
+                  interval: 10,
+                  minorTicksPerInterval: 4,
+                  axisLabelStyle: GaugeTextStyle(
+                      color: const Color(0xFF949494), fontSize: _labelFontSize),
+                  minorTickStyle: const MinorTickStyle(
+                      color: Color(0xFF616161),
+                      thickness: 1.6,
+                      length: 0.058,
+                      lengthUnit: GaugeSizeUnit.factor),
+                  majorTickStyle: const MajorTickStyle(
+                      color: Color(0xFF949494),
+                      thickness: 2.3,
+                      length: 0.087,
+                      lengthUnit: GaugeSizeUnit.factor),
+                  backgroundImage:
+                      const AssetImage('images/dark_theme_gauge.png'),
+                  pointers: const <GaugePointer>[
+                    NeedlePointer(
+                        value: 20,
+                        needleEndWidth: 3,
+                        needleLength: 0.6,
+                        needleColor: Color(0xFFFFFF00),
+                        knobStyle: KnobStyle(
+                          knobRadius: 8,
+                          color: Color(0xFFFFFF00),
+                          sizeUnit: GaugeSizeUnit.logicalPixel,
+                        ),
+                        tailStyle: TailStyle(
+                            width: 3,
+                            color: Color(0xFFFFFF00),
+                            lengthUnit: GaugeSizeUnit.logicalPixel,
+                            length: 20))
+                  ],
+                ),
+              ],
+            ),
+          ),
+          // Attitude indicator
+          Container(
+            padding: EdgeInsets.all(_containerPadding),
+            child: SfRadialGauge(
+              axes: <RadialAxis>[
+                RadialAxis(
+                  showAxisLine: false,
+                  radiusFactor: 1,
+                  canRotateLabels: true,
+                  tickOffset: 0.32,
+                  offsetUnit: GaugeSizeUnit.factor,
+                  // onLabelCreated: _handleAxisLabelCreated,
+                  startAngle: 180 - _rollValue,
+                  endAngle: 180 - _rollValue,
+                  labelOffset: 0.05,
+                  maximum: 270,
+                  minimum: -90,
+                  showLastLabel: true,
+                  interval: 90,
+                  minorTicksPerInterval: 0,
+                  // ranges: <GaugeRange>[
+                  //   GaugeRange(
+                  //       startValue: -90,
+                  //       endValue: 90,
+                  //       color: Color.fromARGB(255, 0x00, 0xbf, 0xff),
+                  //       sizeUnit: GaugeSizeUnit.factor,
+                  //       rangeOffset: 0.06,
+                  //       startWidth: 0.2,
+                  //       endWidth: 0.2),
+                  //   GaugeRange(
+                  //     startValue: 90,
+                  //     endValue: 270,
+                  //     rangeOffset: 0.28,
+                  //     sizeUnit: GaugeSizeUnit.factor,
+                  //     color: const Color(0xFF355C7D),
+                  //     startWidth: 0.2,
+                  //     endWidth: 0.2,
+                  //   )
+                  // ],
+                  axisLabelStyle: GaugeTextStyle(
+                      color: const Color(0xFF949494), fontSize: _labelFontSize),
+                  minorTickStyle: const MinorTickStyle(
+                      color: Color(0xFF616161),
+                      thickness: 1.6,
+                      length: 0.058,
+                      lengthUnit: GaugeSizeUnit.factor),
+                  majorTickStyle: const MajorTickStyle(
+                      color: Color(0xFF949494),
+                      thickness: 2.3,
+                      length: 0.087,
+                      lengthUnit: GaugeSizeUnit.factor),
+                  backgroundImage:
+                      const AssetImage('images/attitude_indicator_back.png'),
+                  pointers: <GaugePointer>[
+                    MarkerPointer(
+                        value: 0,
+                        color: const Color(0xFFDF5F2D),
+                        enableAnimation: false,
+                        // animationDuration: 1200,
+                        markerOffset: 91 + _pitchValue / 2,
+                        offsetUnit: GaugeSizeUnit.logicalPixel,
+                        // markerType: MarkerType.triangle,
+                        markerType: MarkerType.image,
+                        imageUrl: 'images/attitude_indicator_pointer.png',
+                        markerHeight: 100,
+                        markerWidth: 100)
+                  ],
+                )
+              ],
+            ),
+          ),
+          // Vertical speed indicator
+          Container(
+            padding: EdgeInsets.all(_containerPadding),
+            child: SfRadialGauge(
+              axes: <RadialAxis>[
+                RadialAxis(
+                  showAxisLine: false,
+                  showLastLabel: true,
+                  radiusFactor: 1,
+                  canRotateLabels: false,
+                  tickOffset: 0.32,
+                  offsetUnit: GaugeSizeUnit.factor,
+                  // onLabelCreated: _handleAxisLabelCreated,
+                  startAngle: 90,
+                  endAngle: 270,
+                  labelOffset: 0.05,
+                  maximum: 0.5,
+                  minimum: -0.5,
+                  interval: 0.5,
+                  minorTicksPerInterval: 15,
+                  axisLabelStyle: GaugeTextStyle(
+                      color: const Color(0xFF949494), fontSize: _labelFontSize),
+                  minorTickStyle: const MinorTickStyle(
+                      color: Color(0xFF616161),
+                      thickness: 1.6,
+                      length: 0.058,
+                      lengthUnit: GaugeSizeUnit.factor),
+                  majorTickStyle: const MajorTickStyle(
+                      color: Color(0xFF949494),
+                      thickness: 2.3,
+                      length: 0.087,
+                      lengthUnit: GaugeSizeUnit.factor),
+                  backgroundImage:
+                      const AssetImage('images/dark_theme_gauge.png'),
+                  pointers: const <GaugePointer>[
+                    NeedlePointer(
+                        value: 20,
+                        needleEndWidth: 3,
+                        needleLength: 0.6,
+                        needleColor: Color(0xFFFFFF00),
+                        knobStyle: KnobStyle(
+                          knobRadius: 8,
+                          color: Color(0xFFFFFF00),
+                          sizeUnit: GaugeSizeUnit.logicalPixel,
+                        ),
+                        tailStyle: TailStyle(
+                            width: 3,
+                            color: Color(0xFFFFFF00),
+                            lengthUnit: GaugeSizeUnit.logicalPixel,
+                            length: 20))
+                  ],
+                ),
+              ],
+            ),
+          ),
+          // Throttle
+          Container(
+            padding: EdgeInsets.all(_containerPadding),
+            child: SfRadialGauge(
+              // title: GaugeTitle(text: "Throtle"),
+              axes: <RadialAxis>[
+                RadialAxis(
+                  showAxisLine: false,
+                  showLastLabel: true,
+                  radiusFactor: 1,
+                  canRotateLabels: true,
+                  tickOffset: 0.32,
+                  offsetUnit: GaugeSizeUnit.factor,
+                  // onLabelCreated: _handleAxisLabelCreated,
+                  startAngle: 270,
+                  endAngle: 230,
+                  labelOffset: 0.05,
+                  maximum: 100,
+                  minimum: 0,
+                  interval: 10,
+                  minorTicksPerInterval: 4,
+                  axisLabelStyle: GaugeTextStyle(
+                      color: const Color(0xFF949494), fontSize: _labelFontSize),
+                  minorTickStyle: const MinorTickStyle(
+                      color: Color(0xFF616161),
+                      thickness: 1.6,
+                      length: 0.058,
+                      lengthUnit: GaugeSizeUnit.factor),
+                  majorTickStyle: const MajorTickStyle(
+                      color: Color(0xFF949494),
+                      thickness: 2.3,
+                      length: 0.087,
+                      lengthUnit: GaugeSizeUnit.factor),
+                  backgroundImage:
+                      const AssetImage('images/dark_theme_gauge.png'),
+                  pointers: const <GaugePointer>[
+                    NeedlePointer(
+                        value: 20,
+                        needleEndWidth: 3,
+                        needleLength: 0.6,
+                        needleColor: Color(0xFFFFFF00),
+                        knobStyle: KnobStyle(
+                          knobRadius: 8,
+                          color: Color(0xFFFFFF00),
+                          sizeUnit: GaugeSizeUnit.logicalPixel,
+                        ),
+                        tailStyle: TailStyle(
+                            width: 3,
+                            color: Color(0xFFFFFF00),
+                            lengthUnit: GaugeSizeUnit.logicalPixel,
+                            length: 20))
+                  ],
+                ),
+              ],
+            ),
+          ),
+          // Throttle
+          Container(
+            padding: EdgeInsets.all(_containerPadding),
+            child: SfRadialGauge(
+              // title: GaugeTitle(text: "Throtle"),
+              axes: <RadialAxis>[
+                RadialAxis(
+                  showAxisLine: false,
+                  showLastLabel: true,
+                  radiusFactor: 1,
+                  canRotateLabels: true,
+                  tickOffset: 0.32,
+                  offsetUnit: GaugeSizeUnit.factor,
+                  // onLabelCreated: _handleAxisLabelCreated,
+                  startAngle: 270,
+                  endAngle: 230,
+                  labelOffset: 0.05,
+                  maximum: 100,
+                  minimum: 0,
+                  interval: 10,
+                  minorTicksPerInterval: 4,
+                  axisLabelStyle: GaugeTextStyle(
+                      color: const Color(0xFF949494), fontSize: _labelFontSize),
+                  minorTickStyle: const MinorTickStyle(
+                      color: Color(0xFF616161),
+                      thickness: 1.6,
+                      length: 0.058,
+                      lengthUnit: GaugeSizeUnit.factor),
+                  majorTickStyle: const MajorTickStyle(
+                      color: Color(0xFF949494),
+                      thickness: 2.3,
+                      length: 0.087,
+                      lengthUnit: GaugeSizeUnit.factor),
+                  backgroundImage:
+                      const AssetImage('images/dark_theme_gauge.png'),
+                  pointers: const <GaugePointer>[
+                    NeedlePointer(
+                        value: 20,
+                        needleEndWidth: 3,
+                        needleLength: 0.6,
+                        needleColor: Color(0xFFFFFF00),
+                        knobStyle: KnobStyle(
+                          knobRadius: 8,
+                          color: Color(0xFFFFFF00),
+                          sizeUnit: GaugeSizeUnit.logicalPixel,
+                        ),
+                        tailStyle: TailStyle(
+                            width: 3,
+                            color: Color(0xFFFFFF00),
+                            lengthUnit: GaugeSizeUnit.logicalPixel,
+                            length: 20))
+                  ],
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -483,8 +587,7 @@ class _FlightInstrumentsState extends State<FlightInstrumentsPage> {
       args.text = '';
     } else {
       args.labelStyle = GaugeTextStyle(
-          color: const Color(0xFFFFFF00),
-          fontSize: isCardView ? 10 : _labelFontSize);
+          color: const Color(0xFFFFFF00), fontSize: _labelFontSize);
       if (args.text == '0') {
         args.text = 'N';
       } else if (args.text == '180') {
@@ -495,11 +598,10 @@ class _FlightInstrumentsState extends State<FlightInstrumentsPage> {
         args.text = 'E';
         //     color: const Color(0xFFDF5F2D),
         // args.labelStyle = GaugeTextStyle(
-        //     fontSize: isCardView ? 10 : _labelFontSize);
+        //     fontSize:  _labelFontSize);
       } else {
         args.labelStyle = GaugeTextStyle(
-            color: const Color(0xFFFFFFFF),
-            fontSize: isCardView ? 10 : _labelFontSize);
+            color: const Color(0xFFFFFFFF), fontSize: _labelFontSize);
       }
     }
   }
@@ -513,7 +615,6 @@ class _FlightInstrumentsState extends State<FlightInstrumentsPage> {
   double _markerHeight = 10;
   double _markerWidth = 15;
   double _markerOffset = 0.71;
-  double _labelFontSize = 5;
+  double _labelFontSize = 2;
   double _containerPadding = 1;
-  bool isCardView = false;
 }

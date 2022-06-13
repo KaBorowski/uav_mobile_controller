@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
 import 'package:uav_mobile_controller/services/instruments_data.dart';
+import 'package:cbor/cbor.dart';
 
 class UavMqttClient {
   final client = MqttServerClient('test.mosquitto.org', '');
@@ -84,10 +85,11 @@ class UavMqttClient {
 
     /// The client has a change notifier object(see the Observable class) which we then listen to to get
     /// notifications of published updates to each subscribed topic.
-    client.updates!.listen((List<MqttReceivedMessage<MqttMessage?>>? c) {
+    client.updates!.listen((List<MqttReceivedMessage<MqttMessage?>>? c) async {
       final recMess = c![0].payload as MqttPublishMessage;
-      final pt =
-          MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
+      final pt = MqttPublishPayload.bytesToString(recMess.payload.message);
+      // final pt =
+      //     MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
 
       /// The above may seem a little convoluted for users only interested in the
       /// payload, some users however may be interested in the received publish message,
@@ -99,8 +101,11 @@ class UavMqttClient {
       print('');
       if (c[0].topic == 'uav/instruments') {
         try {
-          var compass = double.parse(pt);
-          instruments.SetCompassValue(compass);
+          final payload =
+              Stream.fromIterable(recMess.payload.message.map((x) => [x]));
+          final decoded = await payload.transform(cbor.decoder).single;
+          final decodedMap = decoded.toObject() as Map;
+          instruments.SetCompassValue(decodedMap["0"]);
         } on FormatException catch (e) {
           print('EXAMPLE::parsing data exception - $e');
         }
