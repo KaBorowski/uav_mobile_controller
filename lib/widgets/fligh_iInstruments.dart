@@ -23,6 +23,12 @@ class _FlightInstrumentsState extends State<FlightInstrumentsPage> {
 
   _FlightInstrumentsState();
 
+  Future<bool> _onWillPop() async {
+    await mqttClient.stop();
+    timer.cancel();
+    return true;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -48,26 +54,34 @@ class _FlightInstrumentsState extends State<FlightInstrumentsPage> {
   @override
   Widget build(BuildContext context) {
     _labelFontSize = 7;
-    _containerPadding = 1;
+    _containerPadding = 0;
 
     final Widget _widget = Scaffold(
       backgroundColor: Colors.grey,
       body: GridView.count(
         primary: false,
         padding: const EdgeInsets.all(50),
-        crossAxisSpacing: 00,
+        crossAxisSpacing: 0,
         mainAxisSpacing: 0,
         crossAxisCount: 4,
         children: <Widget>[
           // Compass
           Container(
             padding: EdgeInsets.all(_containerPadding),
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage('images/gauge_background.png'), scale: 1),
+            ),
             child: HeadingIndicator(
                 compassValue: _heading, labelFontSize: _labelFontSize),
           ),
           // Altimeter indicator
           Container(
             padding: EdgeInsets.all(_containerPadding),
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage('images/gauge_background.png'), scale: 1),
+            ),
             child: AltimeterIndicator(
               value: _altitude,
               labelFontSize: _labelFontSize,
@@ -76,18 +90,33 @@ class _FlightInstrumentsState extends State<FlightInstrumentsPage> {
           // Throttle
           Container(
             padding: EdgeInsets.all(_containerPadding),
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage('images/gauge_background.png'), scale: 1),
+            ),
             child: ThrottleIndicator(
-                value: _throttle1, labelFontSize: _labelFontSize),
+              value: _throttle1,
+              labelFontSize: _labelFontSize,
+              id: 1,
+            ),
           ),
           // Throttle
           Container(
             padding: EdgeInsets.all(_containerPadding),
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage('images/gauge_background.png'), scale: 1),
+            ),
             child: ThrottleIndicator(
-                value: _throttle2, labelFontSize: _labelFontSize),
+                value: _throttle2, labelFontSize: _labelFontSize, id: 2),
           ),
           // Attitude indicator
           Container(
             padding: EdgeInsets.all(_containerPadding),
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage('images/gauge_background.png'), scale: 1),
+            ),
             child: AttitudeIndicator(
               rollValue: _roll,
               pitchValue: _pitch,
@@ -97,26 +126,43 @@ class _FlightInstrumentsState extends State<FlightInstrumentsPage> {
           // Vertical speed indicator
           Container(
             padding: EdgeInsets.all(_containerPadding),
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage('images/gauge_background.png'), scale: 1),
+            ),
             child: VerticalSpeedIndicator(
                 value: _verticalSpeed, labelFontSize: _labelFontSize),
           ),
           // Throttle
           Container(
             padding: EdgeInsets.all(_containerPadding),
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage('images/gauge_background.png'), scale: 1),
+            ),
             child: ThrottleIndicator(
-                value: _throttle3, labelFontSize: _labelFontSize),
+                value: _throttle3, labelFontSize: _labelFontSize, id: 3),
           ),
           // Throttle
           Container(
             padding: EdgeInsets.all(_containerPadding),
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage('images/gauge_background.png'), scale: 1),
+            ),
             child: ThrottleIndicator(
-                value: _throttle4, labelFontSize: _labelFontSize),
+                value: _throttle4, labelFontSize: _labelFontSize, id: 4),
           ),
         ],
       ),
     );
 
-    return _widget;
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: _widget,
+    );
+
+    // return _widget;
   }
 
   double _heading = 0.0;

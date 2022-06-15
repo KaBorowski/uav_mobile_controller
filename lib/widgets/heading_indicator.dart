@@ -6,9 +6,11 @@ class HeadingIndicator extends StatelessWidget {
     Key? key,
     required this.compassValue,
     this.labelFontSize = 7.0,
+    this.labelOffset = 0.0,
   }) : super(key: key);
 
   final double labelFontSize;
+  final double labelOffset;
   final double compassValue;
 
   @override
@@ -24,7 +26,7 @@ class HeadingIndicator extends StatelessWidget {
           onLabelCreated: _handleAxisLabelCreated,
           startAngle: -compassValue - 90,
           endAngle: -compassValue - 90,
-          labelOffset: 0.05,
+          labelOffset: labelOffset,
           maximum: 360,
           minimum: 0,
           interval: 30,
@@ -43,31 +45,6 @@ class HeadingIndicator extends StatelessWidget {
               lengthUnit: GaugeSizeUnit.factor),
           backgroundImage:
               const AssetImage('images/dark_theme_gauge_plane.png'),
-          // pointers: <GaugePointer>[
-          //   MarkerPointer(
-          //       value: compassValue,
-          //       color: const Color(0xFFDF5F2D),
-          //       enableAnimation: true,
-          //       animationDuration: 1200,
-          //       markerOffset:  : _markerOffset,
-          //       offsetUnit: GaugeSizeUnit.factor,
-          //       markerType: MarkerType.triangle,
-          //       markerHeight: _markerHeight,
-          //       markerWidth: _markerWidth)
-          // ],
-          // annotations: <GaugeAnnotation>[
-          //   GaugeAnnotation(
-          //       angle: 270,
-          //       positionFactor: _positionFactor,
-          //       widget: Text(
-          //         compassValue.toInt().toString(),
-          //         style: TextStyle(
-          //             color: const Color(0xFFDF5F2D),
-          //             fontWeight: FontWeight.bold,
-          //             fontSize:
-          //                  _annotationTextSize),
-          //       ))
-          // ]
         )
       ],
     );

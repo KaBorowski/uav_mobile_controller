@@ -7,9 +7,11 @@ class AttitudeIndicator extends StatelessWidget {
     required this.rollValue,
     required this.pitchValue,
     this.labelFontSize = 7.0,
+    this.labelOffset = 0.0,
   }) : super(key: key);
 
   final double labelFontSize;
+  final double labelOffset;
   final double rollValue;
   final double pitchValue;
 
@@ -29,7 +31,7 @@ class AttitudeIndicator extends StatelessWidget {
           offsetUnit: GaugeSizeUnit.factor,
           startAngle: 180,
           endAngle: 180,
-          labelOffset: 0.05,
+          labelOffset: labelOffset,
           maximum: 270,
           minimum: -90,
           showLastLabel: true,
@@ -51,6 +53,9 @@ class AttitudeIndicator extends StatelessWidget {
           pointers: <GaugePointer>[
             MarkerPointer(
                 value: rollValue,
+                animationDuration: 100,
+                animationType: AnimationType.linear,
+                enableAnimation: true,
                 color: const Color(0xFFDF5F2D),
                 // enableAnimation: false,
                 markerOffset: markerOffset,
@@ -61,6 +66,9 @@ class AttitudeIndicator extends StatelessWidget {
                 markerWidth: markerWidth),
             MarkerPointer(
                 value: rollValue,
+                animationDuration: 100,
+                animationType: AnimationType.linear,
+                enableAnimation: true,
                 color: const Color(0xFFDF5F2D),
                 // enableAnimation: false,
                 markerOffset: markerOffset + pitchValue / 150.0,
@@ -71,8 +79,10 @@ class AttitudeIndicator extends StatelessWidget {
                 markerWidth: markerWidth),
             MarkerPointer(
                 value: rollValue,
+                animationDuration: 100,
+                animationType: AnimationType.linear,
                 color: const Color(0xFFDF5F2D),
-                // enableAnimation: false,
+                enableAnimation: true,
                 markerOffset: markerOffset,
                 offsetUnit: GaugeSizeUnit.factor,
                 markerType: MarkerType.image,
@@ -88,7 +98,15 @@ class AttitudeIndicator extends StatelessWidget {
               imageUrl: 'images/attitude_const_pointer.png',
               markerHeight: markerHeight,
               markerWidth: markerWidth,
-            )
+            ),
+            const MarkerPointer(
+                value: 0.0,
+                elevation: 4,
+                markerWidth: 12,
+                markerHeight: 10,
+                color: Color(0xFFFFFF00),
+                offsetUnit: GaugeSizeUnit.factor,
+                markerOffset: 0.25)
           ],
         )
       ],

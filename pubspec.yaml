@@ -36,6 +36,10 @@ dependencies:
   cupertino_icons: ^1.0.2
   mqtt_client: ^9.6.8
   cbor: ^5.0.1
+  # login_fresh: ^1.0.8
+  firebase_auth: ^3.3.19
+
+
 
 dev_dependencies:
   flutter_test:

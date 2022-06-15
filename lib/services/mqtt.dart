@@ -176,7 +176,7 @@ class UavMqttClient {
     client.unsubscribe(pubTopic);
 
     /// Wait for the unsubscribe message from the broker if you wish.
-    await MqttUtilities.asyncSleep(2);
+    // await MqttUtilities.asyncSleep(2);
     print('EXAMPLE::Disconnecting');
     client.disconnect();
     print('EXAMPLE::Exiting normally');
@@ -202,7 +202,7 @@ class UavMqttClient {
     } else {
       print(
           'EXAMPLE::OnDisconnected callback is unsolicited or none, this is incorrect - exiting');
-      restart();
+      // restart();
     }
   }
 

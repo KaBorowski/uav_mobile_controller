@@ -6,9 +6,11 @@ class AltimeterIndicator extends StatelessWidget {
     Key? key,
     required this.value,
     this.labelFontSize = 7.0,
+    this.labelOffset = 0.0,
   }) : super(key: key);
 
   final double labelFontSize;
+  final double labelOffset;
   final double value;
 
   @override
@@ -25,7 +27,7 @@ class AltimeterIndicator extends StatelessWidget {
           // onLabelCreated: handleAxisLabelCreated,
           startAngle: 270,
           endAngle: 270,
-          labelOffset: 0.05,
+          labelOffset: labelOffset,
           maximum: 10,
           minimum: 0,
           interval: 1,
@@ -43,9 +45,25 @@ class AltimeterIndicator extends StatelessWidget {
               length: 0.087,
               lengthUnit: GaugeSizeUnit.factor),
           backgroundImage: const AssetImage('images/dark_theme_gauge.png'),
+          annotations: const <GaugeAnnotation>[
+            GaugeAnnotation(
+                angle: 270,
+                verticalAlignment: GaugeAlignment.far,
+                positionFactor: 0.33,
+                widget: Text('ALT',
+                    style: TextStyle(
+                        fontStyle: FontStyle.normal,
+                        fontFamily: 'Times',
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 6)))
+          ],
           pointers: <GaugePointer>[
             NeedlePointer(
                 value: value / 1000.0 % 10.0,
+                animationDuration: 100,
+                animationType: AnimationType.linear,
+                enableAnimation: false,
                 needleEndWidth: 7,
                 needleLength: 0.4,
                 needleColor: const Color(0xFFFFFF00),
@@ -65,6 +83,9 @@ class AltimeterIndicator extends StatelessWidget {
                     length: 20)),
             NeedlePointer(
                 value: value / 100.0 % 10.0,
+                animationDuration: 100,
+                animationType: AnimationType.linear,
+                enableAnimation: false,
                 needleEndWidth: 3,
                 needleLength: 0.6,
                 needleColor: Color(0xFFFFFF00),
@@ -84,6 +105,9 @@ class AltimeterIndicator extends StatelessWidget {
                     length: 20)),
             NeedlePointer(
               value: value / 10000.0,
+              animationDuration: 100,
+              animationType: AnimationType.linear,
+              enableAnimation: false,
               needleEndWidth: 1,
               needleStartWidth: 1,
               needleLength: 0.7,
@@ -91,6 +115,9 @@ class AltimeterIndicator extends StatelessWidget {
             ),
             MarkerPointer(
                 value: value / 10000.0,
+                animationDuration: 100,
+                animationType: AnimationType.linear,
+                enableAnimation: false,
                 elevation: 4,
                 markerWidth: 9,
                 markerHeight: 7,
