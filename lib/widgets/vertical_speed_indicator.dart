@@ -55,7 +55,18 @@ class VerticalSpeedIndicator extends StatelessWidget {
                         fontFamily: 'Times',
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
-                        fontSize: 6)))
+                        fontSize: 6))),
+            GaugeAnnotation(
+                angle: 90,
+                verticalAlignment: GaugeAlignment.far,
+                positionFactor: 0.40,
+                widget: Text('1000FT PER MIN',
+                    style: TextStyle(
+                        fontStyle: FontStyle.normal,
+                        fontFamily: 'Times',
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 4)))
           ],
           pointers: <GaugePointer>[
             NeedlePointer(

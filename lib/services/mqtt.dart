@@ -2,12 +2,12 @@ import 'dart:async';
 import 'dart:io';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
-import 'package:uav_mobile_controller/services/instruments_data.dart';
 import 'package:cbor/cbor.dart';
+import 'package:uav_mobile_controller/services/instruments_data.dart';
 
 class UavMqttClient {
-  // final client = MqttServerClient('test.mosquitto.org', '');
-  final client = MqttServerClient('217.182.74.253', '');
+  final client = MqttServerClient('test.mosquitto.org', '');
+  // final client = MqttServerClient('217.182.74.253', '');
   late InstrumentsData instruments;
   var pongCount = 0; // Pong counter
   final pubTopic = 'uav/instruments';
@@ -33,30 +33,12 @@ class UavMqttClient {
 
     /// Set the correct MQTT protocol for mosquito
     client.setProtocolV311();
-
-    /// If you intend to use a keep alive you must set it here otherwise keep alive will be disabled.
     client.keepAlivePeriod = 20;
-
-    /// Add the unsolicited disconnection callback
     client.onDisconnected = onDisconnected;
-
-    /// Add the successful connection callback
     client.onConnected = onConnected;
-
-    /// Add a subscribed callback, there is also an unsubscribed callback if you need it.
-    /// You can add these before connection or change them dynamically after connection if
-    /// you wish. There is also an onSubscribeFail callback for failed subscriptions, these
-    /// can fail either because you have tried to subscribe to an invalid topic or the broker
-    /// rejects the subscribe request.
     client.onSubscribed = onSubscribed;
-
-    /// Set a ping received callback if needed, called whenever a ping response(pong) is received
-    /// from the broker.
     client.pongCallback = pong;
 
-    /// Create a connection message to use or use the default one. The default one sets the
-    /// client identifier, any supplied username/password and clean session,
-    /// an example of a specific one below.
     final connMess = MqttConnectMessage()
         .withClientIdentifier('Mqtt_MyClientUniqueId')
         .withWillTopic(
@@ -64,55 +46,39 @@ class UavMqttClient {
         .withWillMessage('My Will message')
         .startClean() // Non persistent session for testing
         .withWillQos(MqttQos.atLeastOnce);
-    print('EXAMPLE::Mosquitto client connecting....');
+    print('MQTT::Mosquitto client connecting....');
     client.connectionMessage = connMess;
 
-    /// Connect the client, any errors here are communicated by raising of the appropriate exception. Note
-    /// in some circumstances the broker will just disconnect us, see the spec about this, we however will
-    /// never send malformed messages.
     try {
-      await client.connect("scir", "scir");
+      // await client.connect("scir", "scir");
+      await client.connect();
     } on NoConnectionException catch (e) {
       // Raised by the client when connection fails.
-      print('EXAMPLE::client exception - $e');
+      print('MQTT::client exception - $e');
       client.disconnect();
     } on SocketException catch (e) {
       // Raised by the socket layer
-      print('EXAMPLE::socket exception - $e');
+      print('MQTT::socket exception - $e');
       client.disconnect();
     }
 
     /// Check we are connected
     if (client.connectionStatus!.state == MqttConnectionState.connected) {
-      print('EXAMPLE::Mosquitto client connected');
+      print('MQTT::Mosquitto client connected');
     } else {
-      /// Use status here rather than state if you also want the broker return code.
       print(
-          'EXAMPLE::ERROR Mosquitto client connection failed - disconnecting, status is ${client.connectionStatus}');
+          'MQTT::ERROR Mosquitto client connection failed - disconnecting, status is ${client.connectionStatus}');
       client.disconnect();
       exit(-1);
     }
 
-    /// Ok, lets try a subscription
-    print('EXAMPLE::Subscribing to the test/lol topic');
+    print('MQTT::Subscribing to the test/lol topic');
     client.subscribe(topic, MqttQos.atMostOnce);
 
-    /// The client has a change notifier object(see the Observable class) which we then listen to to get
-    /// notifications of published updates to each subscribed topic.
     client.updates!.listen((List<MqttReceivedMessage<MqttMessage?>>? c) async {
       final recMess = c![0].payload as MqttPublishMessage;
       final pt = MqttPublishPayload.bytesToString(recMess.payload.message);
-      // final pt =
-      //     MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
 
-      /// The above may seem a little convoluted for users only interested in the
-      /// payload, some users however may be interested in the received publish message,
-      /// lets not constrain ourselves yet until the package has been in the wild
-      /// for a while.
-      /// The payload is a byte buffer, this will be specific to the topic
-      // print(
-      //     'EXAMPLE::Change notification:: topic is <${c[0].topic}>, payload is <-- $pt -->');
-      // print('');
       if (c[0].topic == 'uav/instruments') {
         try {
           final payload =
@@ -130,56 +96,32 @@ class UavMqttClient {
           print(decodedMap[MAP_INDEX['ROLL']]);
           instruments.setVerticalSpeed(decodedMap[MAP_INDEX['VERTICAL_SPEED']]);
         } on FormatException catch (e) {
-          print('EXAMPLE::parsing data exception - $e');
+          print('MQTT::parsing data exception - $e');
         }
       }
     });
 
-    /// If needed you can listen for published messages that have completed the publishing
-    /// handshake which is Qos dependant. Any message received on this stream has completed its
-    /// publishing handshake with the broker.
     client.published!.listen((MqttPublishMessage message) {
       print(
-          'EXAMPLE::Published notification:: topic is ${message.variableHeader!.topicName}, with Qos ${message.header!.qos}');
+          'MQTT::Published notification:: topic is ${message.variableHeader!.topicName}, with Qos ${message.header!.qos}');
     });
 
-    /// Lets publish to our topic
-    /// Use the payload builder rather than a raw buffer
-    /// Our known topic to publish to
     final builder = MqttClientPayloadBuilder();
-    // builder.addString('Hello from mqtt_client');
-    // builder.addDouble(90.0);
-    // builder.addInt(90);
     print('EXAMPLE PREAPARING MESSAGE ${builder.payload!}');
 
-    /// Subscribe to it
-    print('EXAMPLE::Subscribing to the uav/instruments topic');
+    print('MQTT::Subscribing to the uav/instruments topic');
     client.subscribe(pubTopic, MqttQos.atLeastOnce);
-
-    // /// Publish it
-    // print('EXAMPLE::Publishing our topic');
-    // client.publishMessage(pubTopic, MqttQos.exactlyOnce, builder.payload!);
-
-    /// Ok, we will now sleep a while, in this gap you will see ping request/response
-    /// messages being exchanged by the keep alive mechanism.
 
     return 0;
   }
 
   Future<int> stop() async {
-    // print('EXAMPLE::Sleeping....');
-    // await MqttUtilities.asyncSleep(600);
-
-    /// Finally, unsubscribe and exit gracefully
-    print('EXAMPLE::Unsubscribing');
+    print('MQTT::Unsubscribing');
     client.unsubscribe(topic);
     client.unsubscribe(pubTopic);
 
-    /// Wait for the unsubscribe message from the broker if you wish.
-    // await MqttUtilities.asyncSleep(2);
-    print('EXAMPLE::Disconnecting');
     client.disconnect();
-    print('EXAMPLE::Exiting normally');
+    print('MQTT::Exiting normally');
     return 0;
   }
 
@@ -190,18 +132,18 @@ class UavMqttClient {
 
   /// The subscribed callback
   void onSubscribed(String topic) {
-    print('EXAMPLE::Subscription confirmed for topic $topic');
+    print('MQTT::Subscription confirmed for topic $topic');
   }
 
   /// The unsolicited disconnect callback
   void onDisconnected() {
-    print('EXAMPLE::OnDisconnected client callback - Client disconnection');
+    print('MQTT::OnDisconnected client callback - Client disconnection');
     if (client.connectionStatus!.disconnectionOrigin ==
         MqttDisconnectionOrigin.solicited) {
-      print('EXAMPLE::OnDisconnected callback is solicited, this is correct');
+      print('MQTT::OnDisconnected callback is solicited, this is correct');
     } else {
       print(
-          'EXAMPLE::OnDisconnected callback is unsolicited or none, this is incorrect - exiting');
+          'MQTT::OnDisconnected callback is unsolicited or none, this is incorrect - exiting');
       // restart();
     }
   }
@@ -209,13 +151,12 @@ class UavMqttClient {
   /// The successful connect callback
   void onConnected() {
     print(
-        'EXAMPLE::OnConnected client callback - Client connection was successful');
+        'MQTT::OnConnected client callback - Client connection was successful');
   }
 
   /// Pong callback
   void pong() {
-    // instruments.SetCompassValue(180.0);
-    print('EXAMPLE::Ping response client callback invoked');
+    print('MQTT::Ping response client callback invoked');
     pongCount++;
   }
 }
